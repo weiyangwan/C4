@@ -50,7 +50,8 @@ function gameInit() {
     }
   }
 
-  //colIndex ===============> index of current array (column[i])
+  //col ====================> refers to each column
+  //colIndex ===============> index of current array (col[i])
   //chosenCol ==============> the current array
   //chipIndex ==============> the index of chip in play
   //chosenCol[chipIndex] ===> current chip(player) in play - either x or o
@@ -61,7 +62,7 @@ function gameInit() {
     for (var i = 0; i < 6; i++) {
       if(chosenCol[i] === chosenCol[chipIndex]) {
       winCount++;
-      console.log(winCount);
+      console.log("col win count: " + winCount);
         if (winCount == 4)  {
           console.log(chosenCol[chipIndex]+ " Wins by column!");
         }
@@ -70,9 +71,17 @@ function gameInit() {
       }
     }
 
-    // for (var j = 0; j < 7; i++) {
-    //   if
-    // }
+    for (var j = 0; j < 7; j++) {
+      //loop each column
+      //in each column reference to same index as chipIndex
+      if(col[j][chipIndex] === chosenCol[chipIndex])  {
+        winCount++;
+        console.log("row win count: " + winCount);
+        if(winCount == 4) {
+          console.log("Win Row!");
+        }
+      }
+    }
   }//end of checkWin
 
 
