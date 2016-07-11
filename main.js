@@ -5,8 +5,8 @@ function gameInit() {
       chipColor = "red",
       col = [],
       colIndex = "",
-      chosenCol = [];
-      chipIndex = "";
+      chosenCol = [],
+      chipIndex = "",
       move = 0;
 
   $(document).ready(function(){
@@ -32,13 +32,122 @@ function gameInit() {
       var targetChip = [colIndex] + [chipIndex];
       var $chipPosition = $('#sq' + targetChip);
       $chipPosition.css("background-color", chipColor);
-
+      console.log("Chosen chip: " + targetChip);
 
       checkWin();
+      lockBoard();
       changePlayer();
     });
 
-  })//end of document.ready
+  });//end of document.ready
+
+  //col ====================> refers to each column
+  //colIndex ===============> index of current array (col[i])
+  //chosenCol ==============> the current array
+  //chipIndex ==============> the index of chip in play
+  //chosenCol[chipIndex] ===> current chip(player) in play - either x or o
+
+  function checkWin() {
+    var winCount = 0;
+    for (var i = 0; i < 6; i++) {//check column
+      if(chosenCol[i] === chosenCol[chipIndex]) {
+        winCount++;
+        // console.log(chosenCol[chipIndex]+ " | win col: " + winCount);
+        if (winCount == 4)  {
+          console.log("WIIIIIINNNNNNNNNN by column!");
+          return true;
+        }
+      } else {
+        winCount = 0;
+      }
+    }//end check column
+
+    winCount = 0;
+    for (var j = 0; j < 7; j++) {//check row
+      if(col[j][chipIndex] === chosenCol[chipIndex])  {
+        winCount++;
+        // console.log(chosenCol[chipIndex]+ " | win row: " + winCount);
+        if(winCount == 4) {
+          console.log("WIIINNNNNNNNNNNNN by Row!");
+          return true;
+        }
+      } else {
+        winCount = 0;
+      }
+    }// end check row
+
+    //check SWNE Diagonal
+    //retrieve colIndex and chipIndex for position of the chipIndex
+    var startColumnSW = colIndex - (Math.min(colIndex,chipIndex));
+    var startChipIndexSW = chipIndex - (Math.min(colIndex,chipIndex));
+    var loopLengthSW = 0;
+    winCount = 0;
+
+    //determine length of loop for SWNE diagonal check
+    if(startColumnSW <=3 && startChipIndexSW <= 2)  {
+      if(startColumnSW === 0) {
+        loopLengthSW = 6 - startChipIndexSW;
+      } else if (startChipIndexSW === 0)  {
+        loopLengthSW = 7 - startColumnSW;
+      }
+      // console.log("Length: " + loopLengthSW);
+      // console.log("Win count before dia: " + winCount);
+      for (var k = 0; k < loopLengthSW; k++) {
+        if(col[startColumnSW + k][startChipIndexSW + k] === chosenCol[chipIndex]) {
+          winCount++;
+          // console.log(chosenCol[chipIndex]+ " | Win dia: " + winCount);
+          if(winCount == 4) {
+            console.log("WIIIIIIIIINNNNNNNN by diagonal SWNE!");
+            return true;
+          }
+        } else {
+          winCount = 0;
+        }
+      }
+    }//end check SWNE Diagonal
+
+    //check SENW Diagonal
+    var startColumnSE = Math.min((parseInt(colIndex) + chipIndex), 6);
+    var startChipIndexSE = Math.max(((parseInt(colIndex) + chipIndex)-6),0);
+    var loopLengthSE = 0;
+    winCount = 0;
+
+    //determine length of loop for SENW Diagonal check
+    if(startColumnSE >= 3 && startChipIndexSE <=2)  {
+      if(startColumnSE < 6) {
+        loopLengthSE = startColumnSE + 1;
+      } else if (startColumnSE == 6)  {
+        loopLengthSE = startColumnSE - startChipIndexSE;
+      }
+      console.log("before SE: " + winCount);
+      for (var l = 0; l < loopLengthSE; l++) {
+        if(col[startColumnSE - l][startChipIndexSE + l] === chosenCol[chipIndex]) {
+          winCount++;
+          if(winCount === 4)  {
+            console.log("WIIIIIIIIINNNNNNNN by diagonal SENW!");
+            return true;
+          }
+        } else {
+          winCount = 0;
+        }
+      }
+    }//end check SENW Diagonal
+  }//end of checkWin
+
+  function lockBoard(){
+    // for (var i = 0; i < $chip.length; i++) {
+
+    // }
+
+    if (checkWin === true) {
+      $chip.off();
+      console.log("Player: " + player + " wins!");
+    } else if (move === 42) {
+      $chip.off();
+      console.log("It's a tie!");
+    }
+
+  }
 
   function changePlayer() {
     if (player === 'x') {
@@ -48,77 +157,8 @@ function gameInit() {
       player = 'x';
       chipColor = "red";
     }
+    move++;
+    console.log("no of move: " + move);
   }
-
-  //col ====================> refers to each column
-  //colIndex ===============> index of current array (col[i])
-  //chosenCol ==============> the current array
-  //chipIndex ==============> the index of chip in play
-  //chosenCol[chipIndex] ===> current chip(player) in play - either x or o
-
-  function checkWin() {
-    var winCount = "";
-    //check Column
-    for (var i = 0; i < 6; i++) {
-      if(chosenCol[i] === chosenCol[chipIndex]) {
-      winCount++;
-      console.log("col win count: " + winCount);
-        if (winCount == 4)  {
-          console.log(chosenCol[chipIndex]+ " Wins by column!");
-        }
-      } else {
-        winCount = 0;
-      }
-    }
-
-    for (var j = 0; j < 7; j++) {
-      //loop each column
-      //in each column reference to same index as chipIndex
-      if(col[j][chipIndex] === chosenCol[chipIndex])  {
-        winCount++;
-        console.log("row win count: " + winCount);
-        if(winCount == 4) {
-          console.log("Win Row!");
-        }
-      }
-    }
-  }//end of checkWin
-
-
-  function lockCol(){
-
-  }
-
 }//end of gameInit
 window.onload = gameInit();
-
-// 07 column and 06 row --> 06 index and 05 index
-//compare within array(compare column)
-  //check max +/-3 from current chip
-    // only check if index is 3 or more
-    // if index 0, check index 1,2,3
-    // if index 1, check index 0,2,3  or 2,3,4
-    // if index 2, check index 0,1,3 or 1,3,4 or 3,4,5
-    // if index 3, check index 0,1,2 or 1,2,4 or 2,4,5
-    // if index 4, check index 1,2,3 or 2,3,5
-    // if index 5, check index 2,3,4
-
-//compare with adjacent array with the same index number (compare col)
-    // if col 0, check col 1,2,3
-    // if col 1, check col 0,2,3  or 2,3,4
-    // if col 2, check col 0,1,3 or 1,3,4 or 3,4,5
-    // if col 3, check col 0,1,2 or 1,2,4 or 2,4,5
-    // if col 4, check col 1,2,3 or 2,3,5
-    // if col 5, check col 2,3,4
-
-//compare diagonally by manipulation array name and index number
-    // if col 0 , index 0, check [1][1], [2][2], [3][3]
-    // if col 3, index 3, check
-        //diagonal southwest/northeast
-          //[0][0], [1][1], [2][2]  or
-          //[1][1], [2][2], [4][4] or
-          //[2][2], [4][4], [5][5] or
-        //diagonal northwest/southeast
-          //[6][0], [5][1], [4][2] or
-          //[5][1], [4][2], [2][4] or
-          //[4][2], [2][4], [1][5] or
