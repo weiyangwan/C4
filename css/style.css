@@ -1,0 +1,48 @@
+/**************
+ SQUARE STYLE
+***************/
+.board {
+  /*position: relative;*/
+  min-width: 310px;
+  max-width: 600px;
+  background-image: url(/assets/BoardBg.png);
+  background-size: cover; }
+
+.board::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%; }
+
+.chip {
+  float: left;
+  width: 12.9%;
+  margin-top: 3.2%;
+  border-radius: 100%;
+  border: 1.5px solid #aac3ff;
+  background-color: #446ccc;
+  text-align: center;
+  /** remove this later **/ }
+
+.square {
+  float: left;
+  margin-top: 0;
+  width: 12.9%;
+  background-color: white;
+  border: 1px solid #335199;
+  border-radius: 100%;
+  vertical-align: top; }
+
+.chip::after,
+.square::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%; }
+
+.chip:nth-of-type(7n+1),
+.square:nth-of-type(7n+1) {
+  margin-left: 3.5%; }
+
+.square:nth-of-type(-n+7) {
+  margin-top: 2%; }
+
+/*# sourceMappingURL=style.css.map */
