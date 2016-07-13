@@ -1,10 +1,153 @@
+@import url('https://fonts.googleapis.com/css?family=Lakki+Reddy');
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+
+$headerColor: #446ccc;
+
+$headerFont: 'Lakki Reddy', cursive;
+$h3FontSize: 2.5em;
+$messageFont:'Lobster', cursive;
+$messageFontSize: 2em;
+
+$circleWidth: 12.9%;
+$circleRadius: 100%;
+$sizeOfBomb: 15%;
+$sizeOfBombBtn: 13%;
+$playerIconSize: 25px;
+$iconSize: 35px;
 /**************
- SQUARE STYLE
+ BASIC STYLE
 ***************/
 
+body  {
+  margin: 0;
+}
+
+h3  {
+  display: inline-block;
+  margin-left: 8%;
+  margin-top: 10%;
+  font-family: $headerFont;
+  font-size: $h3FontSize;
+  color: white;
+}
+
+img {
+  height: $sizeOfBomb;
+  width: $sizeOfBomb;
+}
+
+.mainHeader {
+  margin-top: -15px;
+  margin-bottom: -30px;
+  text-align: center;
+  background-color: $headerColor;
+}
+
+/*******************
+ PLAYER BOARD STYLE
+*******************/
+.playerBoard  {
+  background-color: $headerColor;
+}
+
+.player1,
+.player2  {
+  display: inline-block;
+  margin-left: 10%;
+  font-family: $messageFont;
+  color: white;
+}
+
+h4  {
+  display: inline-block;
+}
+
+.p1bomb,
+.p2bomb  {
+  margin-top: 5%;
+  display: inline-block;
+  height: $sizeOfBombBtn;
+  width: $sizeOfBombBtn;
+  vertical-align: top;
+}
+
+.activated  {
+  margin: 0;
+  color: #f75;
+}
+
+/**************
+ MESSAGE STYLE
+***************/
+.mainMessage  {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.icon {
+  display: inline-block;
+  clear: both;
+}
+
+.message {
+  display: inline-block;
+  font-size: $messageFontSize;
+  font-family: $messageFont;
+  color: #2a447f;
+  vertical-align: top;
+  clear: both;
+}
+
+.red,
+.blue,
+.playerRed,
+.playerBlue {
+  display: inline-block;
+  width: $iconSize;
+  height: $iconSize;
+  vertical-align: top;
+  border-radius: $circleRadius;
+}
+
+.red,
+.playerRed {
+  background-color: red;
+}
+
+.blue,
+.playerBlue {
+  background-color: blue;
+}
+
+.playerRed,
+.playerBlue {
+  margin-top: 5%;
+  width: $playerIconSize;
+  height: $playerIconSize;
+}
+
+.clickBomb  {
+  display: inline-block;
+  width: 40%;
+}
+
+p {
+  margin-top: 0;
+  font-size: .5em;
+  color: #b21900;
+}
+
+.bomb {
+  height: 30%;
+  width: 30%;
+}
+
+/**************
+ BOARD STYLE
+***************/
 .board  {
-  /*position: relative;*/
-  min-width: 310px;
+  margin: 0 auto;
+  min-width: 300px;
   max-width: 600px;
   background-image: url(/assets/BoardBg.png);
   background-size: cover;
@@ -15,25 +158,16 @@
   display: block;
   padding-bottom: 100%;
 }
-
+/**************
+ CHIP STYLE
+***************/
 .chip {
   float: left;
-  width: 12.9%;
+  width: $circleWidth;
   margin-top: 3.2%;
-  border-radius: 100%;
+  border-radius: $circleRadius;
   border: 1.5px solid #aac3ff;
   background-color: #446ccc;
-  text-align: center; /** remove this later **/
-}
-
-.square {
-  float: left;
-  margin-top: 0;
-  width: 12.9%;
-  background-color: white;
-  border: 1px solid #335199;
-  border-radius: 100%;
-  vertical-align: top;
 }
 
 .chip::after,
@@ -47,7 +181,20 @@
 .square:nth-of-type(7n+1) {
   margin-left: 3.5%;
 }
+/**************
+ SQUARE STYLE
+***************/
+
+.square {
+  float: left;
+  margin-top: 0;
+  width: $circleWidth;
+  background-color: white;
+  border: 1px solid #335199;
+  border-radius: $circleRadius;
+  vertical-align: top;
+}
 
 .square:nth-of-type(-n+7) {
-  margin-top: 2%;
+  margin-top: 1.2%;
 }

@@ -1,9 +1,119 @@
+@import url("https://fonts.googleapis.com/css?family=Lakki+Reddy");
+@import url("https://fonts.googleapis.com/css?family=Lobster");
 /**************
- SQUARE STYLE
+ BASIC STYLE
+***************/
+body {
+  margin: 0; }
+
+h3 {
+  display: inline-block;
+  margin-left: 8%;
+  margin-top: 10%;
+  font-family: "Lakki Reddy", cursive;
+  font-size: 2.5em;
+  color: white; }
+
+img {
+  height: 15%;
+  width: 15%; }
+
+.mainHeader {
+  margin-top: -15px;
+  margin-bottom: -30px;
+  text-align: center;
+  background-color: #446ccc; }
+
+/*******************
+ PLAYER BOARD STYLE
+*******************/
+.playerBoard {
+  background-color: #446ccc; }
+
+.player1,
+.player2 {
+  display: inline-block;
+  margin-left: 10%;
+  font-family: "Lobster", cursive;
+  color: white; }
+
+h4 {
+  display: inline-block; }
+
+.p1bomb,
+.p2bomb {
+  margin-top: 5%;
+  display: inline-block;
+  height: 13%;
+  width: 13%;
+  vertical-align: top; }
+
+.activated {
+  margin: 0;
+  color: #f75; }
+
+/**************
+ MESSAGE STYLE
+***************/
+.mainMessage {
+  padding-top: 10px;
+  text-align: center; }
+
+.icon {
+  display: inline-block;
+  clear: both; }
+
+.message {
+  display: inline-block;
+  font-size: 2em;
+  font-family: "Lobster", cursive;
+  color: #2a447f;
+  vertical-align: top;
+  clear: both; }
+
+.red,
+.blue,
+.playerRed,
+.playerBlue {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  vertical-align: top;
+  border-radius: 100%; }
+
+.red,
+.playerRed {
+  background-color: red; }
+
+.blue,
+.playerBlue {
+  background-color: blue; }
+
+.playerRed,
+.playerBlue {
+  margin-top: 5%;
+  width: 25px;
+  height: 25px; }
+
+.clickBomb {
+  display: inline-block;
+  width: 40%; }
+
+p {
+  margin-top: 0;
+  font-size: .5em;
+  color: #b21900; }
+
+.bomb {
+  height: 30%;
+  width: 30%; }
+
+/**************
+ BOARD STYLE
 ***************/
 .board {
-  /*position: relative;*/
-  min-width: 310px;
+  margin: 0 auto;
+  min-width: 300px;
   max-width: 600px;
   background-image: url(/assets/BoardBg.png);
   background-size: cover; }
@@ -13,24 +123,16 @@
   display: block;
   padding-bottom: 100%; }
 
+/**************
+ CHIP STYLE
+***************/
 .chip {
   float: left;
   width: 12.9%;
   margin-top: 3.2%;
   border-radius: 100%;
   border: 1.5px solid #aac3ff;
-  background-color: #446ccc;
-  text-align: center;
-  /** remove this later **/ }
-
-.square {
-  float: left;
-  margin-top: 0;
-  width: 12.9%;
-  background-color: white;
-  border: 1px solid #335199;
-  border-radius: 100%;
-  vertical-align: top; }
+  background-color: #446ccc; }
 
 .chip::after,
 .square::after {
@@ -42,7 +144,19 @@
 .square:nth-of-type(7n+1) {
   margin-left: 3.5%; }
 
+/**************
+ SQUARE STYLE
+***************/
+.square {
+  float: left;
+  margin-top: 0;
+  width: 12.9%;
+  background-color: white;
+  border: 1px solid #335199;
+  border-radius: 100%;
+  vertical-align: top; }
+
 .square:nth-of-type(-n+7) {
-  margin-top: 2%; }
+  margin-top: 1.2%; }
 
 /*# sourceMappingURL=style.css.map */

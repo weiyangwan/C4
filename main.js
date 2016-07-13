@@ -1,17 +1,27 @@
 function gameInit() {
 
   var $chip = $('.chip'),
+      $message = $('.message'),
+      $icon = $('div.icon'),
+      $bomb = $('.bomb'),
+      $p1bomb = $('.p1bomb'),
+      $p2bomb = $('.p2bomb'),
+      bomb = false,
+      player1Bomb = "",
+      player2Bomb = "",
       player = 'x',
       chipColor = "red",
       col = [], //refers to each col
       colIndex = "",//index of each array col[i]
-      chosenCol = [],//col of current chip
+      chosenCol = [],//col of current chip -> col[colIndex]
       chipIndex = "",//index of current chip in col
       currentChip = "",//position of each chip col[i][chipIndex]
       $chipId = '', //the #id of current chip
-      colLock = "",// the $chip to lock when array is full
+      $colLock = "",// the $chip to lock when array is full
       move = 0,
       win;
+
+  $message.text(" Your turn");
 
   $(document).ready(function(){
     //array for each column to record move
@@ -20,32 +30,63 @@ function gameInit() {
     }
 
     $chip.hover(function(){
-      $(this).css("background-color", chipColor);
+      if(bomb)  { //---------------------------------------------------------Problem with hover
+        $(this).css({"background-image": "url('assets/black-bomb-icon.png')", "background-size": "115%", "vertical-align": "bottom"});
+      } else {
+        $(this).css("background-color", chipColor);
+      }
       }, function(){
+      $(this).css("background-image", "");
       $(this).css("background-color", "#446ccc");
     });
 
     $chip.click(function(){
-      //Retrieve col clicked and push player symbol( x or o ) into col array
+      //Retrieve col clicked
       colIndex = this.id.slice(4,5); //------------------------------Why this cannot be $this?
       chosenCol = col[colIndex];
-      chosenCol.push(player);
-      //find the index of the last pushed item
-      chipIndex = chosenCol.length - 1;
-      //change color of chip on game board
-      currentChip = [colIndex] + [chipIndex];
-      $chipId = $('#sq' + currentChip);
-      colLock = $('#' + this.id);
-      $chipId.css("background-color", chipColor);
+      if(bomb)  {
+        $colLock.on(); //--------Need to unlock chips for full array to bomb. IS THIS WORKING?!?!
+        for (var i = 0; i < chosenCol.length; i++) {
+          $('#sq' + (colIndex + i)).css("background-color", "white");
+        }
+        col[colIndex] = [];
+        bomb = false;
+        move -= (chosenCol.length + 1);
+        $message.text(" Your turn");
+      } else {
+        //push player symbol( x or o ) into col array
+        chosenCol.push(player);
 
-      checkWin();
-      lockBoard();
+        //find the index of the last pushed item
+        chipIndex = chosenCol.length - 1;
+
+        //change color of chip on game board
+        currentChip = [colIndex] + [chipIndex];
+        $chipId = $('#sq' + currentChip);
+        $colLock = $('#' + this.id);
+        $chipId.css("background-color", chipColor);
+
+        checkWin();
+        lockBoard();
+      }
       changePlayer();
     });
 
-  });//end of document.ready
+    $bomb.click(function(){
+      if(player === "x" && player1Bomb !== "activated")  {
+        bomb = true;
+        $p1bomb.replaceWith("<h4 class='activated'>Activated</h4>");
+        player1Bomb = "activated";
+        $message.text(" activated the bomb!");
+      } else if(player === "o" && player2Bomb !== "activated") {
+        bomb = true;
+        $p2bomb.replaceWith("<h4 class='activated'>Activated</h4>");
+        player2Bomb = "activated";
+        $message.text(" activated the bomb!");
+      }
+    });
 
-  //chosenCol[chipIndex] ===> current chip(player) in play - either x or o
+  });//end of document.ready
 
   function checkWin() {
     var winCount = 0;
@@ -129,26 +170,36 @@ function gameInit() {
 
   function lockBoard(){
     if (win) {
-      $chip.css("background-color", "#446ccc");
       $chip.off();
-    } else if (move === 42) {
       $chip.css("background-color", "#446ccc");
+      $message.text(" wins!");
+    } else if (move === 41) {
       $chip.off();
+      $chip.css("background-color", "#446ccc");
+      $message.text("It's a tie!");
     } else if (chosenCol.length == 6) {
       $chip.css("background-color", "#446ccc");
-      colLock.off();
+      $colLock.addClass("lock");
+      $colLock.off();
     }
   }
 
   function changePlayer() {
-    if (player === 'x') {
-      player = 'o';
-      chipColor = "blue";
-    } else if (player === 'o')  {
-      player = 'x';
-      chipColor = "red";
+    if(!win)  {
+      if (player === 'x') {
+        player = 'o';
+        chipColor = "blue";
+      } else if (player === 'o')  {
+        player = 'x';
+        chipColor = "red";
+      }
+      $icon.attr("class", chipColor);
+      move++;
     }
-    move++;
+  }
+
+  function newGame()  {
+
   }
 }//end of gameInit
 window.onload = gameInit();
