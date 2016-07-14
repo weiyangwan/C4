@@ -1,11 +1,14 @@
 function gameInit() {
 
-  var $chip = $('.chip'),
+  var $dialog = $('#dialog-message'),
+      $chip = $('.chip'),
       $message = $('.message'),
       $icon = $('div.icon'),
       $bomb = $('.bomb'),
       $p1bomb = $('.p1bomb'),
       $p2bomb = $('.p2bomb'),
+      $bombMsg = $('.bombMsg'),
+      $bombActiveMsg = $('.bombActiveMsg'),
       bomb = false,
       player1Bomb = "",
       player2Bomb = "",
@@ -17,20 +20,24 @@ function gameInit() {
       chipIndex = "",//index of current chip in col
       currentChip = "",//position of each chip col[i][chipIndex]
       $chipId = '', //the #id of current chip
-      $colLock = "",// the $chip to lock when array is full
+      $column = "",// the $chip to lock when array is full
       move = 0,
       win;
 
-  $message.text(" Your turn");
-
   $(document).ready(function(){
+    $message.text(" Your turn");
+    $bombActiveMsg.text("Click to activate the bomb!");
     //array for each column to record move
     for (var i = 0; i < 7; i++) {
       col[i] = new Array();
     }
 
+    // $dialog.dialog({
+    //   modal: true
+    // });
+
     $chip.hover(function(){
-      if(bomb)  { //---------------------------------------------------------Problem with hover
+      if(bomb)  {
         $(this).css({"background-image": "url('assets/black-bomb-icon.png')", "background-size": "115%", "vertical-align": "bottom"});
       } else {
         $(this).css("background-color", chipColor);
@@ -41,11 +48,12 @@ function gameInit() {
     });
 
     $chip.click(function(){
-      //Retrieve col clicked
-      colIndex = this.id.slice(4,5); //------------------------------Why this cannot be $this?
+      //Retrieve column clicked
+      $column = $('#' + this.id);
+      colIndex = this.id.slice(4,5); //------------------------------Why this does not need to be $(this)?
       chosenCol = col[colIndex];
       if(bomb)  {
-        $colLock.on(); //--------Need to unlock chips for full array to bomb. IS THIS WORKING?!?!
+        // $column.on(); //-----------------------------------------Need to unlock chips to allow bomb for full array.
         for (var i = 0; i < chosenCol.length; i++) {
           $('#sq' + (colIndex + i)).css("background-color", "white");
         }
@@ -60,16 +68,25 @@ function gameInit() {
         //find the index of the last pushed item
         chipIndex = chosenCol.length - 1;
 
+        for (var j = 5; j < [chipIndex]; j--) {
+          $('#sq' + (colIndex + j)).toggleClass(chipColor, 5000);
+          console.log($('#sq' + (colIndex + j)));
+        }
         //change color of chip on game board
-        currentChip = [colIndex] + [chipIndex];
+        currentChip = colIndex + chipIndex;
         $chipId = $('#sq' + currentChip);
-        $colLock = $('#' + this.id);
         $chipId.css("background-color", chipColor);
 
         checkWin();
         lockBoard();
       }
       changePlayer();
+      $(this).css("background-image", "");
+      $(this).css("background-color", chipColor);
+      if (chosenCol.length == 6) {
+        $chip.css("background-color", "#446ccc");
+        $column.off();
+      }
     });
 
     $bomb.click(function(){
@@ -172,15 +189,14 @@ function gameInit() {
     if (win) {
       $chip.off();
       $chip.css("background-color", "#446ccc");
+      $bombMsg.hide();
       $message.text(" wins!");
     } else if (move === 41) {
       $chip.off();
       $chip.css("background-color", "#446ccc");
+      $icon.hide();
+      $bombMsg.hide();
       $message.text("It's a tie!");
-    } else if (chosenCol.length == 6) {
-      $chip.css("background-color", "#446ccc");
-      $colLock.addClass("lock");
-      $colLock.off();
     }
   }
 
@@ -189,10 +205,17 @@ function gameInit() {
       if (player === 'x') {
         player = 'o';
         chipColor = "blue";
+        if(player1Bomb === "activated") {
+          $bombActiveMsg.text("You have already activated your bomb!");
+        }
       } else if (player === 'o')  {
         player = 'x';
         chipColor = "red";
+        if(player2Bomb === "activated") {
+          $bombActiveMsg.text("You have already activated your bomb!");
+        }
       }
+      $bombActiveMsg.text("Click to activate the bomb!");
       $icon.attr("class", chipColor);
       move++;
     }

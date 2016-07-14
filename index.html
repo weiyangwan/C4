@@ -8,13 +8,14 @@
     <title>C4 | Connect 4 with a Twist</title>
   </head>
   <body>
+    <!-- <div id="dialog-message" title="How to Play?">
+      <p>This is a dialog box.</p>
+    </div> -->
+
     <header>
       <div class="mainHeader">
         <h3>C4 - With a Twist</h3>
-        <!-- <img src="/assets/black-bomb-icon.png" alt="Bomb Image" /> -->
       </div>
-
-
 
     </header>
 
@@ -38,8 +39,8 @@
         <div class="mainMessage">
           <div class="icon red"></div>
           <div class="message"></div>
-          <div class="clickBomb">
-            <p>Click to activate the bomb!</p>
+          <div class="bombMsg">
+            <p class="bombActiveMsg"></p>
             <img src="/assets/black-bomb-icon.png" class="bomb" alt="Bomb button">
           </div>
         </div>
@@ -106,7 +107,8 @@
         </div>
       </div>
     </main>
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
   <script src="main.js"></script>
   </body>
 </html>

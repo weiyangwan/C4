@@ -1,6 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Lakki+Reddy");
 @import url("https://fonts.googleapis.com/css?family=Lobster");
 /**************
+ DIALOG BOX STYLE
+***************/
+#dialog-message {
+  height: 300px;
+  border: 3px solid black;
+  background-color: white; }
+
+/**************
  BASIC STYLE
 ***************/
 body {
@@ -35,11 +43,12 @@ h3 {
 .playerRed,
 .playerBlue {
   margin-top: 5%;
-  width: 25px;
-  height: 25px; }
+  width: 20px;
+  height: 20px; }
 
 h4 {
-  display: inline-block; }
+  display: inline-block;
+  line-height: .7; }
 
 .p1bomb,
 .p2bomb {
@@ -90,13 +99,13 @@ h4 {
 .playerBlue {
   background-color: blue; }
 
-.clickBomb {
+.bombMsg {
   display: inline-block;
   width: 40%; }
 
 p {
   margin-top: 0;
-  font-size: .5em;
+  font-size: .7em;
   color: #b21900; }
 
 .bomb {
@@ -158,9 +167,6 @@ p {
  MEDIA QUERIES
 ***************/
 @media (min-width: 480px) and (max-width: 767px) {
-  html {
-    background-color: #88acff; }
-
   h3 {
     margin-bottom: 2%;
     font-size: 3em; }
@@ -180,7 +186,7 @@ p {
     margin-bottom: 0;
     font-size: .9em; }
 
-  .clickBomb img {
+  .bombMsg img {
     height: 30%;
     width: 30%; }
 
@@ -201,10 +207,11 @@ p {
     width: 18%; } }
 @media (min-width: 768px) and (max-width: 1023px) {
   h3 {
-    font-size: 3em; }
+    font-size: 3em;
+    line-height: 1; }
 
   .mainHeader {
-    margin-top: -15px;
+    margin-top: 0;
     margin-bottom: 1px; }
 
   .info {
@@ -248,10 +255,13 @@ p {
     width: 70%; }
 
   .message {
-    font-size: 3em; }
+    width: 37%;
+    font-size: 3em;
+    text-align: left; }
 
   .red,
   .blue {
+    margin-left: 1.5%;
     height: 50px;
     width: 50px; }
 
@@ -259,11 +269,10 @@ p {
     margin-top: -10%;
     font-size: 1em; }
 
-  .clickBomb {
-    margin-left: 5%;
+  .bombMsg {
     margin-right: -5%; }
 
-  .clickBomb img {
+  .bombMsg img {
     height: 40%;
     width: 40%; }
 
@@ -274,9 +283,11 @@ p {
     clear: both; } }
 @media (min-width: 1024px) {
   h3 {
-    font-size: 3.5em; }
+    font-size: 3.5em;
+    line-height: .6; }
 
   .mainHeader {
+    margin-top: 0;
     margin-bottom: 0; }
 
   .info {
@@ -295,7 +306,7 @@ p {
   .player2 {
     display: block;
     width: 80%;
-    margin-left: 15%; }
+    margin-left: 23%; }
 
   h4 {
     font-size: 1.5em;
@@ -303,7 +314,7 @@ p {
 
   .p1bomb,
   .p2bomb {
-    margin-top: 5%;
+    margin-top: 3%;
     height: 20%;
     width: 20%; }
 
@@ -311,12 +322,13 @@ p {
    MESSAGE STYLE
   ***************/
   .mainMessage {
+    padding-top: 30px;
     border-top: 5px solid #58f; }
 
   .message {
     font-size: 3em; }
 
-  .clickBomb {
+  .bombMsg {
     display: block;
     width: 100%;
     text-align: center; }
@@ -328,7 +340,7 @@ p {
 
   .playerRed,
   .playerBlue {
-    margin-top: 8%;
+    margin-top: 5%;
     width: 40px;
     height: 40px; }
 
