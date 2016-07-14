@@ -3,11 +3,6 @@
 /**************
  DIALOG BOX STYLE
 ***************/
-#dialog-message {
-  height: 300px;
-  border: 3px solid black;
-  background-color: white; }
-
 /**************
  BASIC STYLE
 ***************/
@@ -119,7 +114,7 @@ p {
   margin: 0 auto;
   min-width: 300px;
   max-width: 600px;
-  background-image: url(/assets/BoardBg.png);
+  background-image: url(../assets/BoardBg.png);
   background-size: cover; }
 
 .board::after {

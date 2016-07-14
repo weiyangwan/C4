@@ -17,15 +17,15 @@ $iconSize: 35px;
 /**************
  DIALOG BOX STYLE
 ***************/
-#dialog-message {
-  height: 300px;
-  border: 3px solid black;
-  background-color: white;
-}
+// #dialog-message {
+//   height: 300px;
+//   border: 3px solid black;
+//   background-color: white;
+// }
 
-.ui-dialog-titlebar {
-  // height: 50px;
-}
+// .ui-dialog-titlebar {
+//   height: 50px;
+// }
 
 
 /**************
@@ -159,7 +159,7 @@ p {
   margin: 0 auto;
   min-width: 300px;
   max-width: 600px;
-  background-image: url(/assets/BoardBg.png);
+  background-image: url(../assets/BoardBg.png);
   background-size: cover;
 }
 
