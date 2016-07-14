@@ -1,7 +1,6 @@
 function gameInit() {
 
-  var $dialog = $('#dialog-message'),
-      $chip = $('.chip'),
+  var $chip = $('.chip'),
       $message = $('.message'),
       $icon = $('div.icon'),
       $bomb = $('.bomb'),
@@ -32,10 +31,6 @@ function gameInit() {
       col[i] = new Array();
     }
 
-    // $dialog.dialog({
-    //   modal: true
-    // });
-
     $chip.hover(function(){
       if(bomb)  {
         $(this).css({"background-image": "url('../assets/black-bomb-icon.png')", "background-size": "115%", "vertical-align": "bottom"});
@@ -52,8 +47,8 @@ function gameInit() {
       $column = $('#' + this.id);
       colIndex = this.id.slice(4,5); //------------------------------Why this does not need to be $(this)?
       chosenCol = col[colIndex];
+
       if(bomb)  {
-        // $column.on(); //-----------------------------------------Need to unlock chips to allow bomb for full array.
         for (var i = 0; i < chosenCol.length; i++) {
           $('#sq' + (colIndex + i)).css("background-color", "white");
         }
@@ -64,15 +59,8 @@ function gameInit() {
       } else {
         //push player symbol( x or o ) into col array
         chosenCol.push(player);
-
-        //find the index of the last pushed item
+        //find the index of the last pushed item & change color
         chipIndex = chosenCol.length - 1;
-
-        for (var j = 5; j < [chipIndex]; j--) {
-          $('#sq' + (colIndex + j)).toggleClass(chipColor, 5000);
-          console.log($('#sq' + (colIndex + j)));
-        }
-        //change color of chip on game board
         currentChip = colIndex + chipIndex;
         $chipId = $('#sq' + currentChip);
         $chipId.css("background-color", chipColor);
@@ -182,7 +170,6 @@ function gameInit() {
         }
       }//end check SENW Diagonal
     }//end of check undefined
-
   }//end of checkWin
 
   function lockBoard(){
@@ -219,10 +206,6 @@ function gameInit() {
       $icon.attr("class", chipColor);
       move++;
     }
-  }
-
-  function newGame()  {
-
   }
 }//end of gameInit
 window.onload = gameInit();
