@@ -33,7 +33,7 @@ function gameInit() {
 
     $chip.hover(function(){
       if(bomb)  {
-        $(this).css({"background-image": "url('/assets/black-bomb-icon.png')", "background-size": "115%", "vertical-align": "bottom"});
+        $(this).css({"background-image": "url('assets/black-bomb-icon.png')", "background-size": "115%", "vertical-align": "bottom"});
       } else {
         $(this).css("background-color", chipColor);
       }
