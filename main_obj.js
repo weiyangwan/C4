@@ -50,19 +50,14 @@ $(document).ready(function(){
     },//end of initGame
 
     hoverAction: function(event) {
-      console.log(event);
       if(this.bomb)  {
-        event.target.id.css({
-          "background-image": "url('assets/black-bomb-icon.png')",
-          "background-size": "115%",
-          "vertical-align": "bottom",
-        });
+        $(event.target).addClass("hoverBomb");
       } else {
-        event.target.css("background-color", this.chipColor);
+        $(event.target).addClass("red");
       }
       }, function(){
-      event.target.css("background-image", "");
-      event.target.css("background-color", "#446ccc");
+      $(event.target).removeClass("hoverBomb")
+      $(event.target).removeClass("red");
     },//end of hoverAction
 
     evalPlay: function(event)  {

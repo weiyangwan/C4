@@ -143,6 +143,11 @@ p {
 .square:nth-of-type(7n+1) {
   margin-left: 3.5%; }
 
+.hoverBomb {
+  background-image: url(../assets/black-bomb-icon.png);
+  background-size: 115%;
+  vertical-align: bottom; }
+
 /**************
  SQUARE STYLE
 ***************/
