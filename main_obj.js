@@ -1,58 +1,73 @@
 $(document).ready(function(){
-  var connect4 = {
 
-    $dialog: $('#dialog-message'),
-    $chip: $('.chip'),
-    $message: $('.message'),
-    $icon: $('div.icon'),
-    $bomb: $('.bomb'),
-    $p1bomb: $('.p1bomb'),
-    $p2bomb: $('.p2bomb'),
-    $bombMsg: $('.bombMsg'),
-    $bombActiveMsg: $('.bombActiveMsg'),
-    bomb: false,
-    player1Bomb: "",
-    player2Bomb: "",
-    player: 'x',
-    chipColor: "red",
-    col: [], //refers to each col
-    colIndex: "",//index of each array col[i]
-    chosenCol: [],//col of current chip -> col[colIndex]
-    chipIndex: "",//index of current chip in col
-    currentChip: "",//position of each chip col[i][chipIndex]
-    $chipId: '', //the #id of current chip
-    $column: "",// the $chip to lock when array is full
-    move: 0,
-    win: "",
-  };//end of connect4
+  function ConnectFour() {
 
-  initGame: function() {
-    this.$message.text(" Your turn");
-    this.$bombActiveMsg.text("Click to activate the bomb!");
-    //array for each column to record move
-    for (var i = 0; i < 7; i++) {
-      col[i] = new Array();
-    }
+    this.$dialog = $('#dialog-message');
+    this.$chip = $('.chip');
+    this.$message = $('.message');
+    this.$icon = $('div.icon');
+    this.$bomb = $('.bomb');
+    this.$p1bomb = $('.p1bomb');
+    this.$p2bomb = $('.p2bomb');
+    this.$bombMsg = $('.bombMsg');
+    this.$bombActiveMsg = $('.bombActiveMsg');
+    this.bomb = false;
+    this.player1Bomb = "";
+    this.player2Bomb = "";
+    this.player = 'x';
+    this.chipColor = "red";
+    this.numRow = 6;
+    this.numCol = 7;
+    this.col = []; //refers to each col
+    this.colIndex = "";//index of each array col[i]
+    this.chosenCol = [];//col of current chip -> col[colIndex]
+    this.chipIndex = "";//index of current chip in col
+    this.currentChip = "";//position of each chip col[i][chipIndex]
+    this.$chipId = ''; //the #id of current chip
+    this.$column = "";// the $chip to lock when array is full
+    this.move = 1;
+    this.win = "";
+    this.winSequence = 4;
+  }//end of connectFour
 
-    // $dialog.dialog({
-    //   modal: true
-    // });
+  ConnectFour.prototype = {
+    constructor: ConnectFour,
 
-    this.$chip.hover(function(){
+    initGame: function() {
+      this.$message.text(" Your turn");
+      this.$bombActiveMsg.text("Click to activate the bomb!");
+
+      //array for each column to record move
+      for (var i = 0; i < this.numCol; i++) {
+        this.col[i] = new Array();
+      }
+
+      this.$chip.hover(this.hoverAction.bind(this));
+
+      this.$chip.click(this.evalPlay.bind(this));
+
+      this.$bomb.click(this.bombActivated.bind(this));
+    },//end of initGame
+
+    hoverAction: function(event) {
+      console.log(event);
       if(this.bomb)  {
-        $(this).css({"background-image": "url('assets/black-bomb-icon.png')", "background-size": "115%", "vertical-align": "bottom"});
+        event.target.id.css({
+          "background-image": "url('assets/black-bomb-icon.png')",
+          "background-size": "115%",
+          "vertical-align": "bottom",
+        });
       } else {
-        $(this).css("background-color", this.chipColor);
+        event.target.css("background-color", this.chipColor);
       }
       }, function(){
-      $(this).css("background-image", "");
-      $(this).css("background-color", "#446ccc");
-    });
+      event.target.css("background-image", "");
+      event.target.css("background-color", "#446ccc");
+    },//end of hoverAction
 
-    this.$chip.click(function(){
-      //Retrieve column clicked
-      this.$column = $('#' + this.id);
-      this.colIndex = this.id.slice(4,5); //------------------------------Why this does not need to be $(this)?
+    evalPlay: function(event)  {
+      this.$column = $('#' + event.target.id);
+      this.colIndex = event.target.id.slice(4,5);
       this.chosenCol = this.col[this.colIndex];
       if(this.bomb)  {
         // $column.on(); //-----------------------------------------Need to unlock chips to allow bomb for full array.
@@ -62,7 +77,7 @@ $(document).ready(function(){
         this.col[this.colIndex] = [];
         this.bomb = false;
         this.move -= (this.chosenCol.length + 1);
-        $message.text(" Your turn");
+        this.$message.text(" Your turn");
       } else {
         //push player symbol( x or o ) into this.col array
         this.chosenCol.push(this.player);
@@ -88,9 +103,9 @@ $(document).ready(function(){
         this.$chip.css("background-color", "#446ccc");
         this.$column.off();
       }
-    });
+    },//end of evalPlay
 
-    this.$bomb.click(function(){
+    bombActivated: function() {
       if(this.player === "x" && this.player1Bomb !== "activated")  {
         this.bomb = true;
         this.$p1bomb.replaceWith("<h4 class='activated'>Activated</h4>");
@@ -102,43 +117,51 @@ $(document).ready(function(){
         this.player2Bomb = "activated";
         this.$message.text(" activated the bomb!");
       }
-    });
-  },
+    },//end of bombActivated
 
-  checkWin: function() {
-    winCount: 0,
-    //check SWNE Diagonal, retrieve colIndex and chipIndex for position of the chipIndex
-    startColumnSW: this.colIndex - (Math.min(this.colIndex,this.chipIndex)),
-    startChipIndexSW: this.chipIndex - (Math.min(this.colIndex,this.chipIndex)),
-    loopLengthSW: 0,
+    checkWin: function() {
+      this.winCount= 0;
+      if(this.chosenCol[this.chipIndex] !== undefined){
+        this.checkWinCol();
+        this.checkWinRow();
+        this.checkWinSWNE();
+        this.checkWinSENW();
+      }//end of check undefined
+    },//end of checkWin
 
-    if(this.chosenCol[this.chipIndex] !== undefined){
-      for (var i = 0; i < 6; i++) {//check column
+    checkWinCol: function() {
+      for (var i = 0; i < this.numRow; i++) {
         if(this.chosenCol[i] === this.chosenCol[this.chipIndex]) {
           this.winCount++;
-          if (this.winCount == 4)  {
+          if (this.winCount == this.winSequence)  {
             this.win = true;
           }
         } else {
           this.winCount = 0;
         }
-      }//end check column
+      }
+    },
 
+    checkWinRow: function() {
       this.winCount = 0;
-      for (var j = 0; j < 7; j++) {//check row
+      for (var j = 0; j < this.numCol; j++) {
         if(this.col[j][this.chipIndex] === this.chosenCol[this.chipIndex])  {
           this.winCount++;
-          if(this.winCount == 4) {
+          if(this.winCount == this.winSequence) {
             this.win = true;
           }
         } else {
           this.winCount = 0;
         }
-      }// end check row
+      }
+    },
 
-
+    checkWinSWNE: function()  {
       this.winCount = 0;
-
+      //Retrieve colIndex and chipIndex for position of the chipIndex
+      startColumnSW = this.colIndex - (Math.min(this.colIndex,this.chipIndex));
+      startChipIndexSW = this.chipIndex - (Math.min(this.colIndex,this.chipIndex));
+      loopLengthSW = 0;
       //determine length of loop for SWNE diagonal check
       if(this.startColumnSW <=3 && this.startChipIndexSW <= 2)  {
         if(this.startColumnSW === 0) {
@@ -149,16 +172,17 @@ $(document).ready(function(){
         for (var k = 0; k < this.loopLengthSW; k++) {
           if(this.col[this.startColumnSW + k][this.startChipIndexSW + k] === this.chosenCol[this.chipIndex]) {
             this.winCount++;
-            if(this.winCount == 4) {
+            if(this.winCount == this.winSequence) {
               this.win = true;
             }
           } else {
             this.winCount = 0;
           }
         }
-      }//end check SWNE Diagonal
+      }
+    },
 
-      //check SENW Diagonal
+    checkWinSENW: function()  {
       var startColumnSE = Math.min((parseInt(this.colIndex) + this.chipIndex), 6);
       var startChipIndexSE = Math.max(((parseInt(this.colIndex) + this.chipIndex)-6),0);
       var loopLengthSE = 0;
@@ -174,52 +198,48 @@ $(document).ready(function(){
         for (var l = 0; l < this.loopLengthSE; l++) {
           if(this.col[this.startColumnSE - l][this.startChipIndexSE + l] === this.chosenCol[this.chipIndex]) {
             this.winCount++;
-            if(this.winCount === 4)  {
+            if(this.winCount === this.winSequence)  {
               this.win = true;
             }
           } else {
             this.winCount = 0;
           }
         }
-      }//end check SENW Diagonal
-    }//end of check undefined
-
-  },//end of checkWin
-
-  lockBoard: function() {
-    if (this.win) {
-      this.$chip.off();
-      this.$chip.css("background-color", "#446ccc");
-      this.$bombMsg.hide();
-      this.$message.text(" wins!");
-    } else if (this.move === 41) {
-      this.$chip.off();
-      this.$chip.css("background-color", "#446ccc");
-      this.$icon.hide();
-      this.$bombMsg.hide();
-      this.$message.text("It's a tie!");
-    }
-  },
-
-  changePlayer: function() {
-    if(!this.win)  {
-      if (this.player === 'x') {
-        this.player = 'o';
-        this.chipColor = "blue";
-        if(this.player1Bomb === "activated") {
-          this.$bombActiveMsg.text("You have already activated your bomb!");
-        }
-      } else if (this.player === 'o')  {
-        this.player = 'x';
-        this.chipColor = "red";
-        if(this.player2Bomb === "activated") {
-          this.$bombActiveMsg.text("You have already activated your bomb!");
-        }
       }
-      this.$bombActiveMsg.text("Click to activate the bomb!");
-      this.$icon.attr("class", this.chipColor);
-      this.move++;
-    }
-  },
+    },
+
+    lockBoard: function() {
+      if (this.win) {
+        this.$chip.off();
+        this.$chip.css("background-color", "#446ccc");
+        this.$bombMsg.hide();
+        this.$message.text(" wins!");
+      } else if (this.move === (this.numRow * this.numCol)) {
+        this.$chip.off();
+        this.$chip.css("background-color", "#446ccc");
+        this.$icon.hide();
+        this.$bombMsg.hide();
+        this.$message.text("It's a tie!");
+      }
+    },
+
+    changePlayer: function() {
+      if(!this.win)  {
+        if (this.player === 'x') {
+          this.player = 'o';
+          this.chipColor = "blue";
+        } else if (this.player === 'o')  {
+          this.player = 'x';
+          this.chipColor = "red";
+        }
+        this.$icon.attr("class", this.chipColor);
+        this.move++;
+      }
+    },
+
+  };//end of ConnectFour.prototype
+
+  var C4 = new ConnectFour();
+  C4.initGame();
 
 });//end of document.ready
