@@ -193,6 +193,11 @@ p {
 }
 
 .hoverBomb  {
+  display: inline-block;
+  width: $iconSize;
+  height: $iconSize;
+  vertical-align: top;
+  border-radius: $circleRadius;
   background-image: url(../assets/black-bomb-icon.png);
   background-size: 115%;
   vertical-align: bottom;
